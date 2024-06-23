@@ -58,7 +58,7 @@ I did provide a script for sensitivity analysis. Using this script we can do sen
 
     Implement `get_model`, `get_data_loader`, `get_optimizer`, and `get_criterion` functions in a Python file (e.g., `my_model.py`). These functions should return your quantized model, a data loader for your dataset, an optimizer, and the loss criterion, respectively.
    
-4. **Create a Configuration File:**
+4. **Create or edit the Configuration File:**
 
     Create a `config.yaml` file with the following content:
 

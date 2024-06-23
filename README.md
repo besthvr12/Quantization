@@ -41,3 +41,8 @@ In this approach, we skip both statistics collection and calibration:
 
 Instead, we directly train the model with the quantization effects simulated during training. This method initializes the parameters and allows the model to adapt to quantization without prior knowledge of the data distribution.
 
+# Sensitivity Analysis
+In addition to the above approaches, we also performed sensitivity analysis. Using sensitivity analysis, we can identify which layers are most affected by loss. This information helps us selectively quantize layers that are less sensitive to quantization, thereby preserving the overall model performance.
+
+
+

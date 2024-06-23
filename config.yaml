@@ -1,1 +1,4 @@
-
+model_path: "path/to/quantized_model.pth"
+data_path: "path/to/dataset"
+output_file: "Best_Model_After_Sensitivity_Analysis.pt"
+tolerance: 0.2

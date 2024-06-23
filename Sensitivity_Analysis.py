@@ -4,6 +4,7 @@ import torch.nn as nn
 import torch.optim as optim
 import collections
 import json
+import argparse
 from pytorch_quantization import calib
 from pytorch_quantization import nn as quant_nn
 from pytorch_quantization.tensor_quant import QuantDescriptor
@@ -65,26 +66,26 @@ def sensitivity_analysis(model,train_loader,optimizer,criterion,tolerance=0.2):
 
 
 if __name__ == "__main__":
-    import argparse
     
-
     parser = argparse.ArgumentParser(description='Sensitivity Analysis for Quantized Model')
-    parser.add_argument('--model', type=str, required=True, help='Path to the quantized model')
-    parser.add_argument('--data', type=str, required=True, help='Path to the dataset')
-    parser.add_argument('--output', type=str, default='Best_Model_After_Sensitivity_Analysis.pt', help='Output file for the best model after sensitivity analysis')
-    parser.add_argument('--tolerance', type=float, default=0.09, help='Performance tolerance for sensitivity analysis')
+    parser.add_argument('--config', type=str, required=True, help='Path to the configuration file')
     args = parser.parse_args()
 
-    model = get_quantized_model(args.model)
-    train_loader = get_data_loader(args.data)
+    # Load configuration from YAML file
+    with open(args.config, 'r') as f:
+        config = yaml.safe_load(f)
+
+    model = get_model(config['model_path'])
+    train_loader = get_data_loader(config['data_path'])
     optimizer = get_optimizer(model)
     criterion = get_criterion()
 
-    quant_layer_sensitivity, skipped_layers = sensitivity_analysis(model, train_loader, optimizer, criterion, args.tolerance)
+    quant_layer_sensitivity, skipped_layers = sensitivity_analysis(model, train_loader, optimizer, criterion, config['tolerance'])
 
-    with open(args.output.replace('.pt', '_sensitivity_results.json'), 'w') as f:
+    output_file = config['output_file']
+    with open(output_file.replace('.pt', '_sensitivity_results.json'), 'w') as f:
         json.dump(quant_layer_sensitivity, f, indent=4)
 
-    print(f'Sensitivity analysis completed. Results saved to {args.output.replace(".pt", "_sensitivity_results.json")}')
-    torch.save(model.state_dict(), args.output)
-    print(f'Model saved to {args.output}')
+    print(f'Sensitivity analysis completed. Results saved to {output_file.replace(".pt", "_sensitivity_results.json")}')
+    torch.save(model.state_dict(), output_file)
+    print(f'Model saved to {output_file}')

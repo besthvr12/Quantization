@@ -44,5 +44,46 @@ Instead, we directly train the model with the quantization effects simulated dur
 # Sensitivity Analysis
 In addition to the above approaches, we also performed sensitivity analysis. Using sensitivity analysis, we can identify which layers are most affected by loss. This information helps us selectively quantize layers that are less sensitive to quantization, thereby preserving the overall model performance.
 
+I did provide a script for sensitivity analysis. Using this script we can do sensitivity analysis for any quantized model.
+### How to Use
+
+1. **Clone the repository:**
+
+    ```bash
+    https://github.com/besthvr12/PIDNetQAT.git
+    cd PIDNetQAT
+    ```
+
+2. **Prepare your model and dataset:**
+
+    Implement `get_model`, `get_data_loader`, `get_optimizer`, and `get_criterion` functions in a Python file (e.g., `my_model.py`). These functions should return your quantized model, a data loader for your dataset, an optimizer, and the loss criterion, respectively.
+   
+4. **Create a Configuration File:**
+
+    Create a `config.yaml` file with the following content:
+
+    ```yaml
+    model_path: "path/to/quantized_model.pth"
+    data_path: "path/to/dataset"
+    output_file: "Best_Model_After_Sensitivity_Analysis.pt"
+    tolerance: 0.09
+    ```
+
+5. **Run Sensitivity Analysis:**
+
+    Use the `sensitivity_analysis.py` script with the configuration file to perform sensitivity analysis on your model.
+
+    ```bash
+    python sensitivity_analysis.py --config config.yaml
+    ```
+
+6. **View Results:**
+
+    The sensitivity analysis results will be saved in a JSON file, and the best model will be saved as specified in the configuration file.
+
+---
+
+By following these steps, we can easily perform sensitivity analysis on the quantized models using a configuration file.
+
 
 
